@@ -1,0 +1,489 @@
+<main class="gf-home">
+  <section class="gf-hero" aria-labelledby="gf-hero-title">
+    {% if section.settings.hero_image != blank %}
+      <div class="gf-hero__media">
+        {{ section.settings.hero_image | image_url: width: 2200 | image_tag: class: 'gf-hero__image', alt: section.settings.hero_image_alt, loading: 'eager' }}
+      </div>
+    {% endif %}
+    <div class="gf-hero__shade"></div>
+    <div class="gf-hero__content">
+      <p class="gf-kicker">{{ section.settings.hero_kicker }}</p>
+      <h1 id="gf-hero-title">{{ section.settings.hero_heading }}</h1>
+      <p>{{ section.settings.hero_text }}</p>
+      <div class="gf-actions">
+        <a class="gf-button gf-button--primary" href="{{ routes.root_url }}pages/reference-guides">{{ section.settings.primary_cta }}</a>
+        <a class="gf-button gf-button--secondary" href="#arts-crafts">{{ section.settings.secondary_cta }}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="gf-band gf-band--intro" aria-labelledby="gf-intro-title">
+    <div class="gf-band__inner gf-intro">
+      <p class="gf-kicker">{{ section.settings.intro_kicker }}</p>
+      <h2 id="gf-intro-title">{{ section.settings.intro_heading }}</h2>
+      <p>{{ section.settings.intro_text }}</p>
+    </div>
+  </section>
+
+  <section id="arts-crafts" class="gf-band" aria-labelledby="gf-arts-title">
+    <div class="gf-band__inner">
+      <div class="gf-section-heading">
+        <p class="gf-kicker">{{ section.settings.arts_kicker }}</p>
+        <h2 id="gf-arts-title">{{ section.settings.arts_heading }}</h2>
+        <p>{{ section.settings.arts_text }}</p>
+      </div>
+      <div class="gf-grid gf-grid--three">
+        <article class="gf-card">
+          <span>01</span>
+          <h3>Artist profiles</h3>
+          <p>Public pages can hold artist biographies, materials, techniques, and attribution using details provided by each artist.</p>
+        </article>
+        <article class="gf-card">
+          <span>02</span>
+          <h3>Handmade goods</h3>
+          <p>Non-restricted arts, crafts, and body-care goods can stay public with clear maker context and availability notes.</p>
+        </article>
+        <article class="gf-card">
+          <span>03</span>
+          <h3>Reference library</h3>
+          <p>Guides organize product formats, ingredients, safe-use notes, and cultural context without turning the site into checkout.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="community" class="gf-band gf-band--green" aria-labelledby="gf-community-title">
+    <div class="gf-band__inner gf-split">
+      <div>
+        <p class="gf-kicker">{{ section.settings.community_kicker }}</p>
+        <h2 id="gf-community-title">{{ section.settings.community_heading }}</h2>
+      </div>
+      <div class="gf-panel">
+        <p>{{ section.settings.community_text }}</p>
+        <ul>
+          <li>Sourced founder and maker biography</li>
+          <li>Mi'kmawitasik maker context and botanical expertise</li>
+          <li>Rights and community updates with attribution</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="bath-body" class="gf-band gf-band--topicals" aria-labelledby="gf-bath-body-title">
+    <div class="gf-band__inner gf-bath-body">
+      <div class="gf-section-heading">
+        <p class="gf-kicker">{{ section.settings.topicals_kicker }}</p>
+        <h2 id="gf-bath-body-title">{{ section.settings.topicals_heading }}</h2>
+        <p>{{ section.settings.topicals_text }}</p>
+      </div>
+      <div class="gf-grid gf-grid--two">
+        <div class="gf-callout">
+          <h3>{{ section.settings.topicals_notice_heading }}</h3>
+          <p>{{ section.settings.topicals_notice_text }}</p>
+          <div class="gf-actions">
+            <a class="gf-button gf-button--primary" href="{{ routes.root_url }}pages/product-format-guide">{{ section.settings.guides_label }}</a>
+            <a class="gf-button gf-button--secondary" href="{{ routes.root_url }}pages/contact">{{ section.settings.contact_page_label }}</a>
+          </div>
+        </div>
+        <div class="gf-guide-list">
+          <a href="{{ routes.root_url }}pages/product-format-guide">Product format guide</a>
+          <a href="{{ routes.root_url }}pages/hemp-oil">Hemp oil guide</a>
+          <a href="{{ routes.root_url }}pages/bear-grease-guide">Bear grease guide</a>
+          <a href="{{ routes.root_url }}pages/contact">Contact Glooscaps Finest</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="adult-products" class="gf-band gf-band--adult" aria-labelledby="gf-adult-title">
+    <div class="gf-band__inner gf-adult">
+      <div class="gf-section-heading">
+        <p class="gf-kicker">{{ section.settings.adult_kicker }}</p>
+        <h2 id="gf-adult-title">{{ section.settings.adult_heading }}</h2>
+        <p>{{ section.settings.adult_text }}</p>
+      </div>
+      <div class="gf-grid gf-grid--two">
+        <div class="gf-callout">
+          <h3>{{ section.settings.adult_notice_heading }}</h3>
+          <p>{{ section.settings.adult_notice_text }}</p>
+          <div class="gf-actions">
+            <a class="gf-button gf-button--primary" href="{{ routes.root_url }}pages/reference-guides">{{ section.settings.adult_primary_label }}</a>
+            <a class="gf-button gf-button--secondary" href="{{ routes.root_url }}pages/contact">{{ section.settings.adult_secondary_label }}</a>
+          </div>
+        </div>
+        <div class="gf-guide-list">
+          <a href="{{ routes.root_url }}pages/product-format-guide">Product format guide</a>
+          <a href="{{ routes.root_url }}pages/cbd-thc-1-1-basics">CBD, THC, and 1:1 basics</a>
+          <a href="{{ routes.root_url }}pages/edibles-guide">Edibles guide</a>
+          <a href="{{ routes.root_url }}pages/topicals-extracts-vape-carts-guide">Topicals, extracts, and vape carts guide</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="gf-band" aria-labelledby="gf-contact-title">
+    <div class="gf-band__inner gf-contact-strip">
+      <div>
+        <p class="gf-kicker">{{ section.settings.contact_kicker }}</p>
+        <h2 id="gf-contact-title">{{ section.settings.contact_heading }}</h2>
+        <p>{{ section.settings.contact_text }}</p>
+      </div>
+      <div class="gf-contact-links">
+        <a href="{{ routes.root_url }}pages/contact">{{ section.settings.contact_page_label }}</a>
+        <a href="{{ section.settings.linktree_url | escape }}" target="_blank" rel="noopener">Linktree</a>
+        <a href="{{ section.settings.instagram_url | escape }}" target="_blank" rel="noopener">Instagram</a>
+        <a href="{{ section.settings.facebook_url | escape }}" target="_blank" rel="noopener">Facebook</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+{% stylesheet %}
+  .gf-home {
+    --gf-ink: #f4ead9;
+    --gf-muted: rgba(244, 234, 217, 0.72);
+    --gf-charcoal: #11100d;
+    --gf-panel: #1d1b16;
+    --gf-olive: #3e513d;
+    --gf-gold: #d7b24a;
+    --gf-red: #9d5849;
+    color: var(--gf-ink);
+    background: var(--gf-charcoal);
+  }
+
+  .gf-hero {
+    position: relative;
+    min-height: clamp(560px, 78svh, 780px);
+    display: grid;
+    align-items: end;
+    overflow: hidden;
+    background: var(--gf-charcoal);
+  }
+
+  .gf-hero__media,
+  .gf-hero__shade {
+    position: absolute;
+    inset: 0;
+  }
+
+  .gf-hero__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: saturate(0.82) contrast(1.06) brightness(0.76);
+  }
+
+  .gf-hero__shade {
+    background: linear-gradient(90deg, rgba(17, 16, 13, 0.92), rgba(17, 16, 13, 0.68) 52%, rgba(17, 16, 13, 0.28));
+  }
+
+  .gf-hero__content {
+    position: relative;
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 96px 0 72px;
+    color: var(--gf-ink);
+  }
+
+  .gf-hero h1,
+  .gf-band h2 {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    line-height: 0.98;
+    letter-spacing: 0;
+  }
+
+  .gf-hero h1 {
+    max-width: 820px;
+    font-size: clamp(3rem, 8vw, 6.75rem);
+  }
+
+  .gf-hero__content > p:not(.gf-kicker) {
+    max-width: 680px;
+    margin: 22px 0 0;
+    color: var(--gf-muted);
+    font-size: clamp(1.05rem, 2vw, 1.3rem);
+    line-height: 1.55;
+  }
+
+  .gf-kicker {
+    margin: 0 0 14px;
+    color: var(--gf-red);
+    font-size: 0.82rem;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .gf-hero .gf-kicker,
+  .gf-band--green .gf-kicker,
+  .gf-band--adult .gf-kicker {
+    color: var(--gf-gold);
+  }
+
+  .gf-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  .gf-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 0 18px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .gf-button--primary {
+    background: var(--gf-gold);
+    color: #15130f;
+  }
+
+  .gf-button--secondary {
+    border: 1px solid currentColor;
+    color: currentColor;
+  }
+
+  .gf-band {
+    padding: clamp(56px, 8vw, 96px) 0;
+  }
+
+  .gf-band__inner {
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto;
+  }
+
+  .gf-band--intro {
+    border-top: 1px solid rgba(215, 178, 74, 0.28);
+    border-bottom: 1px solid rgba(215, 178, 74, 0.18);
+    background: #171511;
+  }
+
+  .gf-intro {
+    max-width: 920px;
+    text-align: center;
+  }
+
+  .gf-band h2 {
+    font-size: clamp(2.1rem, 5vw, 4.8rem);
+  }
+
+  .gf-intro p:last-child,
+  .gf-section-heading p,
+  .gf-panel p,
+  .gf-callout p,
+  .gf-contact-strip p {
+    color: var(--gf-muted);
+    font-size: 1.08rem;
+    line-height: 1.65;
+  }
+
+  .gf-section-heading {
+    display: grid;
+    gap: 12px;
+    max-width: 780px;
+    margin-bottom: 30px;
+  }
+
+  .gf-section-heading p {
+    margin: 0;
+  }
+
+  .gf-grid {
+    display: grid;
+    gap: 16px;
+  }
+
+  .gf-grid--three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .gf-grid--two {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.7fr);
+    align-items: stretch;
+  }
+
+  .gf-card,
+  .gf-callout,
+  .gf-guide-list,
+  .gf-panel {
+    border: 1px solid rgba(215, 178, 74, 0.2);
+    border-radius: 8px;
+    background: var(--gf-panel);
+  }
+
+  .gf-card {
+    padding: 28px;
+    min-height: 230px;
+  }
+
+  .gf-card span {
+    color: var(--gf-gold);
+    font-weight: 700;
+  }
+
+  .gf-card h3,
+  .gf-callout h3 {
+    margin: 28px 0 10px;
+    font-family: var(--font-heading--family);
+    font-size: clamp(1.5rem, 2.2vw, 2rem);
+  }
+
+  .gf-card p,
+  .gf-callout p {
+    margin: 0;
+  }
+
+  .gf-band--green {
+    color: var(--gf-ink);
+    background: var(--gf-olive);
+  }
+
+  .gf-split {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 40px;
+    align-items: start;
+  }
+
+  .gf-panel {
+    background: rgba(17, 16, 13, 0.35);
+    border-color: rgba(244, 234, 217, 0.18);
+    padding: 30px;
+  }
+
+  .gf-panel ul {
+    margin: 22px 0 0;
+    padding-left: 20px;
+    display: grid;
+    gap: 8px;
+    color: var(--gf-ink);
+  }
+
+  .gf-band--topicals {
+    background: #211f19;
+  }
+
+  .gf-band--adult {
+    color: var(--gf-ink);
+    background: #14120f;
+    border-top: 1px solid rgba(157, 88, 73, 0.38);
+    border-bottom: 1px solid rgba(157, 88, 73, 0.3);
+  }
+
+  .gf-band--adult .gf-callout,
+  .gf-band--adult .gf-guide-list {
+    background: rgba(157, 88, 73, 0.14);
+    border-color: rgba(215, 178, 74, 0.22);
+  }
+
+  .gf-callout {
+    padding: 30px;
+  }
+
+  .gf-callout h3 {
+    margin-top: 0;
+  }
+
+  .gf-guide-list {
+    display: grid;
+    align-content: center;
+    padding: 18px;
+  }
+
+  .gf-guide-list a,
+  .gf-contact-links a {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    color: var(--gf-ink);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(215, 178, 74, 0.18);
+  }
+
+  .gf-guide-list a:last-child,
+  .gf-contact-links a:last-child {
+    border-bottom: 0;
+  }
+
+  .gf-guide-list a:hover,
+  .gf-contact-links a:hover {
+    color: var(--gf-gold);
+  }
+
+  .gf-contact-strip {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.55fr);
+    gap: 36px;
+    align-items: start;
+  }
+
+  .gf-contact-links {
+    border-top: 2px solid var(--gf-gold);
+  }
+
+  @media (max-width: 860px) {
+    .gf-grid--three,
+    .gf-grid--two,
+    .gf-split,
+    .gf-contact-strip {
+      grid-template-columns: 1fr;
+    }
+
+    .gf-hero__shade {
+      background: rgba(17, 16, 13, 0.78);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Glooscaps home",
+  "settings": [
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image" },
+    { "type": "text", "id": "hero_image_alt", "label": "Hero image alt text", "default": "Glooscaps Finest brand image" },
+    { "type": "text", "id": "hero_kicker", "label": "Hero kicker", "default": "Mi'kmaw maker-led information library" },
+    { "type": "text", "id": "hero_heading", "label": "Hero heading", "default": "Glooscaps Finest" },
+    { "type": "textarea", "id": "hero_text", "label": "Hero text", "default": "A founder-led Mi'kma'ki brand archive for herbal body care, product knowledge, artist profiles, and community context. Public information stays open; restricted product viewing stays separate." },
+    { "type": "text", "id": "primary_cta", "label": "Primary CTA", "default": "Reference guides" },
+    { "type": "text", "id": "secondary_cta", "label": "Secondary CTA", "default": "Artists & crafts" },
+    { "type": "text", "id": "intro_kicker", "label": "Intro kicker", "default": "Field notes" },
+    { "type": "text", "id": "intro_heading", "label": "Intro heading", "default": "Founder story, plant knowledge, and public reference guides." },
+    { "type": "textarea", "id": "intro_text", "label": "Intro text", "default": "The storefront is shaped as a calm information library: part botanical handbook, part artist directory, and part founder archive for Glooscaps Finest." },
+    { "type": "text", "id": "arts_kicker", "label": "Arts kicker", "default": "Public" },
+    { "type": "text", "id": "arts_heading", "label": "Arts heading", "default": "Artists, handmade goods, and reference cards." },
+    { "type": "textarea", "id": "arts_text", "label": "Arts text", "default": "Arts, crafts, wellness, About, Contact, and reference-library pages remain public. Cultural meaning, affiliations, and artist histories should come from the people named." },
+    { "type": "text", "id": "community_kicker", "label": "Community kicker", "default": "Context" },
+    { "type": "text", "id": "community_heading", "label": "Community heading", "default": "Ground the brand in sourced biography and approved words." },
+    { "type": "textarea", "id": "community_text", "label": "Community text", "default": "Glooscaps Finest can carry Clinton Ray Howard's founder story, Mi'kmawitasik maker profile, and MRA/community references with a careful source trail and room for final approval." },
+    { "type": "text", "id": "topicals_kicker", "label": "Topicals kicker", "default": "Herbal body care" },
+    { "type": "text", "id": "topicals_heading", "label": "Topicals heading", "default": "Product knowledge before product browsing." },
+    { "type": "textarea", "id": "topicals_text", "label": "Topicals text", "default": "Public guides can explain formats, ingredients, usage notes, and storage in an apothecary handbook style without enabling online checkout." },
+    { "type": "text", "id": "topicals_notice_heading", "label": "Topicals notice heading", "default": "Use guides as the front door" },
+    { "type": "textarea", "id": "topicals_notice_text", "label": "Topicals notice text", "default": "Reference pages stay open for learning. Product pages can carry individual details, classification, NFS notices, downloadable guides, and availability context." },
+    { "type": "text", "id": "adult_kicker", "label": "19+ kicker", "default": "Product viewing" },
+    { "type": "text", "id": "adult_heading", "label": "19+ heading", "default": "Restricted product pages stay behind the selective 19+ gate." },
+    { "type": "textarea", "id": "adult_text", "label": "19+ text", "default": "General information can remain public. Direct adult-use product viewing is gated and marked NFS, for viewing purposes only, with no adult-use checkout." },
+    { "type": "text", "id": "adult_notice_heading", "label": "19+ notice heading", "default": "NFS - for viewing purposes only" },
+    { "type": "textarea", "id": "adult_notice_text", "label": "19+ notice text", "default": "Adult-use product pages are informational only. No adult-use products are sold through this Shopify checkout. Product pages should remain clearly separated from public reference content." },
+    { "type": "text", "id": "adult_primary_label", "label": "19+ primary label", "default": "Reference library" },
+    { "type": "text", "id": "adult_secondary_label", "label": "19+ secondary label", "default": "Contact" },
+    { "type": "text", "id": "guides_label", "label": "Guides label", "default": "Product guide" },
+    { "type": "text", "id": "contact_kicker", "label": "Contact kicker", "default": "Connect" },
+    { "type": "text", "id": "contact_heading", "label": "Contact heading", "default": "Contact the Glooscaps Finest team." },
+    { "type": "textarea", "id": "contact_text", "label": "Contact text", "default": "Use the contact page for direct questions, source approvals, artist-profile details, or public brand information." },
+    { "type": "text", "id": "contact_page_label", "label": "Contact page label", "default": "Contact page" },
+    { "type": "text", "id": "linktree_url", "label": "Linktree URL", "default": "https://linktr.ee/glooscapsfinest" },
+    { "type": "text", "id": "facebook_url", "label": "Facebook URL", "default": "https://www.facebook.com/Glooscaps-Finest-106209585298368" },
+    { "type": "text", "id": "instagram_url", "label": "Instagram URL", "default": "https://www.instagram.com/glooscaps__finest/" }
+  ]
+}
+{% endschema %}
