@@ -1,0 +1,191 @@
+{% liquid
+  assign product_restricted = false
+%}
+{% capture product_restricted_output %}{% render 'glooscaps-product-restricted', gf_product: product %}{% endcapture %}
+{% liquid
+  assign product_restricted_output = product_restricted_output | strip
+  if product_restricted_output == 'true'
+    assign product_restricted = true
+  endif
+%}
+
+<main class="gf-product{% if product_restricted %} gf-product--restricted{% endif %}"{% if product_restricted %} data-gf-age-gate{% endif %}>
+  {% if product_restricted %}
+    {% render 'glooscaps-age-gate', gate_id: 'gf-product-agegate', exit_url: routes.root_url, heading: section.settings.age_gate_heading, text: section.settings.age_gate_text, confirm_label: section.settings.age_gate_confirm, decline_label: section.settings.age_gate_decline %}
+  {% endif %}
+
+  <section class="gf-product__inner{% if product_restricted %} gf-restricted-content{% endif %}">
+    <div class="gf-product__media">
+      {% if product.featured_image != blank %}
+        {{ product.featured_image | image_url: width: 1200 | image_tag: class: 'gf-product__image', alt: product.title }}
+      {% endif %}
+    </div>
+    <div class="gf-product__content">
+      {% if product_restricted %}
+        <p class="gf-product__kicker">{{ section.settings.restricted_kicker }}</p>
+      {% else %}
+        <p class="gf-product__kicker">{{ section.settings.kicker }}</p>
+      {% endif %}
+      <h1>{{ product.title }}</h1>
+      {% if product.description != blank %}
+        <div class="gf-product__description">{{ product.description }}</div>
+      {% endif %}
+      <div class="gf-product__notice">
+        {% if product_restricted %}
+          <h2>{{ section.settings.restricted_notice_heading }}</h2>
+          <p>{{ section.settings.restricted_notice_text }}</p>
+        {% else %}
+          <h2>{{ section.settings.notice_heading }}</h2>
+          <p>{{ section.settings.notice_text }}</p>
+        {% endif %}
+        <div class="gf-product__actions">
+          <a href="{{ routes.root_url }}pages/contact">{{ section.settings.contact_label }}</a>
+          <a href="{{ section.settings.linktree_url | escape }}" target="_blank" rel="noopener">{{ section.settings.linktree_label }}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+{% stylesheet %}
+  .gf-product {
+    --gf-ink: #f4ead9;
+    --gf-muted: rgba(244, 234, 217, 0.72);
+    --gf-charcoal: #11100d;
+    --gf-panel: #1d1b16;
+    --gf-gold: #d7b24a;
+    --gf-red: #9d5849;
+    color: var(--gf-ink);
+    background: var(--gf-charcoal);
+  }
+
+  .gf-product__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(28px, 6vw, 70px);
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: clamp(48px, 8vw, 88px) 0;
+  }
+
+  .gf-product__media {
+    border: 1px solid rgba(215, 178, 74, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--gf-panel);
+    min-height: 320px;
+  }
+
+  .gf-product__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .gf-product__kicker {
+    margin: 0 0 12px;
+    color: var(--gf-gold);
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .gf-product h1 {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-size: clamp(2.4rem, 6vw, 5rem);
+    line-height: 1;
+    letter-spacing: 0;
+  }
+
+  .gf-product__description {
+    margin-top: 24px;
+    color: var(--gf-muted);
+    line-height: 1.7;
+  }
+
+  .gf-product__description a {
+    color: var(--gf-gold);
+  }
+
+  .gf-product__notice {
+    margin-top: 28px;
+    border: 1px solid rgba(215, 178, 74, 0.2);
+    border-radius: 8px;
+    padding: 24px;
+    background: var(--gf-panel);
+  }
+
+  .gf-product--restricted .gf-product__notice {
+    border-color: rgba(157, 88, 73, 0.56);
+    background: rgba(157, 88, 73, 0.14);
+  }
+
+  .gf-product__notice h2 {
+    margin: 0 0 10px;
+    font-family: var(--font-heading--family);
+    font-size: 1.8rem;
+    letter-spacing: 0;
+  }
+
+  .gf-product__notice p {
+    margin: 0;
+    color: var(--gf-muted);
+    line-height: 1.6;
+  }
+
+  .gf-product__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .gf-product__actions a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 0 18px;
+    border-radius: 999px;
+    text-decoration: none;
+    color: #15130f;
+    background: var(--gf-gold);
+    font-weight: 700;
+  }
+
+  .gf-product__actions a:first-child {
+    color: var(--gf-ink);
+    background: transparent;
+    border: 1px solid currentColor;
+  }
+
+  @media (max-width: 840px) {
+    .gf-product__inner {
+      grid-template-columns: 1fr;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Glooscaps product info",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Product guide" },
+    { "type": "text", "id": "restricted_kicker", "label": "19+ kicker", "default": "Product viewing - 19+" },
+    { "type": "text", "id": "notice_heading", "label": "Notice heading", "default": "Information and availability" },
+    { "type": "textarea", "id": "notice_text", "label": "Notice text", "default": "This product page is presented as information first. Online checkout is not enabled through this Shopify storefront." },
+    { "type": "text", "id": "restricted_notice_heading", "label": "19+ notice heading", "default": "NFS - for viewing purposes only" },
+    { "type": "textarea", "id": "restricted_notice_text", "label": "19+ notice text", "default": "This adult-use product page is for adults 19+ only. No adult-use products are sold through this Shopify checkout. NFS. For viewing purposes only." },
+    { "type": "text", "id": "age_gate_heading", "label": "Age gate heading", "default": "Adults Only - 19+" },
+    { "type": "textarea", "id": "age_gate_text", "label": "Age gate text", "default": "This section contains adult-use product information intended only for people 19 years of age or older in Nova Scotia. No adult-use products are sold through this Shopify checkout." },
+    { "type": "text", "id": "age_gate_confirm", "label": "Confirm label", "default": "Yes, I am 19+" },
+    { "type": "text", "id": "age_gate_decline", "label": "Decline label", "default": "No, take me back" },
+    { "type": "text", "id": "contact_label", "label": "Contact label", "default": "Contact" },
+    { "type": "text", "id": "linktree_label", "label": "Linktree label", "default": "Linktree" },
+    { "type": "text", "id": "linktree_url", "label": "Linktree URL", "default": "https://linktr.ee/glooscapsfinest" }
+  ]
+}
+{% endschema %}
