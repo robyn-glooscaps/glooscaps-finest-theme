@@ -1,0 +1,140 @@
+<main class="gf-page">
+  <section class="gf-page__hero">
+    <div class="gf-page__inner">
+      <p class="gf-page__kicker">{{ section.settings.public_kicker }}</p>
+      <h1>{{ page.title }}</h1>
+    </div>
+  </section>
+
+  <section class="gf-page__body">
+    <article class="gf-page__article">{{ page.content }}</article>
+  </section>
+</main>
+
+{% stylesheet %}
+  .gf-page {
+    --gf-ink: #f4ead9;
+    --gf-muted: rgba(244, 234, 217, 0.72);
+    --gf-charcoal: #11100d;
+    --gf-panel: #1d1b16;
+    --gf-olive: #3e513d;
+    --gf-gold: #d7b24a;
+    --gf-red: #9d5849;
+    color: var(--gf-ink);
+    background: var(--gf-charcoal);
+  }
+
+  .gf-page__hero {
+    color: var(--gf-ink);
+    background: #15130f;
+    border-bottom: 1px solid rgba(215, 178, 74, 0.24);
+    padding: clamp(64px, 10vw, 118px) 0;
+  }
+
+  .gf-page__inner,
+  .gf-page__body {
+    width: min(980px, calc(100% - 32px));
+    margin: 0 auto;
+  }
+
+  .gf-page__hero h1 {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-size: clamp(2.4rem, 6vw, 5.2rem);
+    line-height: 1;
+    letter-spacing: 0;
+  }
+
+  .gf-page__kicker {
+    margin: 0 0 12px;
+    color: var(--gf-gold);
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .gf-page__body {
+    display: grid;
+    gap: 28px;
+    padding: clamp(48px, 8vw, 84px) 0;
+  }
+
+  .gf-page__article {
+    color: var(--gf-muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+
+  .gf-page__article h2,
+  .gf-page__article h3 {
+    color: var(--gf-ink);
+    font-family: var(--font-heading--family);
+    letter-spacing: 0;
+  }
+
+  .gf-page__article a {
+    color: var(--gf-gold);
+  }
+
+  .gf-guide-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 28px 0;
+  }
+
+  .gf-guide-card {
+    display: grid;
+    gap: 8px;
+    min-height: 150px;
+    padding: 22px;
+    border: 1px solid rgba(215, 178, 74, 0.2);
+    border-radius: 8px;
+    color: var(--gf-muted);
+    background: var(--gf-panel);
+    text-decoration: none;
+  }
+
+  .gf-guide-card strong {
+    color: var(--gf-ink);
+    font-family: var(--font-heading--family);
+    font-size: 1.5rem;
+    letter-spacing: 0;
+  }
+
+  .gf-guide-card span {
+    color: var(--gf-muted);
+  }
+
+  .gf-guide-card:hover {
+    border-color: rgba(215, 178, 74, 0.54);
+  }
+
+  .gf-callout {
+    margin: 24px 0;
+    padding: 18px 20px;
+    border-left: 4px solid var(--gf-gold);
+    background: rgba(215, 178, 74, 0.08);
+  }
+
+  @media (max-width: 720px) {
+    .gf-guide-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Glooscaps page",
+  "settings": [
+    {
+      "type": "text",
+      "id": "public_kicker",
+      "label": "Page kicker",
+      "default": "Public information library"
+    }
+  ]
+}
+{% endschema %}
