@@ -1,0 +1,176 @@
+{% liquid
+  assign restricted_handles = '|cbd-dosage-guide|hemp-capsules-guide|pain-spray-guide|product-format-guide|cbd-thc-1-1-basics|edibles-guide|topicals-extracts-vape-carts-guide|'
+  assign current_handle = page.handle | prepend: '|' | append: '|'
+  assign is_restricted = false
+  if restricted_handles contains current_handle
+    assign is_restricted = true
+  endif
+
+  assign eyebrow = 'Product Reference'
+  assign subtitle = 'Practical guidance, key uses, and safe-use notes.'
+  case page.handle
+    when 'cbd-dosage-guide'
+      assign eyebrow = 'Daily Supplement · Internal Use · Reference Guide'
+      assign subtitle = 'Start low · Increase slowly · Track your response'
+    when 'hemp-oil'
+      assign eyebrow = 'Topical · Internal · Nutritional'
+      assign subtitle = 'Versatile · Nourishing · Plant-Based'
+    when 'bear-grease-guide'
+      assign eyebrow = 'Traditional · Topical · External Use'
+      assign subtitle = 'Tallow · Protective · Time-Honoured'
+    when 'hemp-capsules-guide'
+      assign eyebrow = 'Daily Supplement · Internal Use'
+      assign subtitle = 'Consistent · Convenient · Plant-Based'
+    when 'colloidal-silver-guide'
+      assign eyebrow = 'Topical Reference · External Use'
+      assign subtitle = 'Simple guidance · Safety · Storage'
+    when 'pain-spray-guide'
+      assign eyebrow = 'Topical Reference · Adults 19+'
+      assign subtitle = 'Targeted · External Use · Informational'
+  endcase
+
+  assign guide_image = page.metafields.custom.guide_image.value
+  assign download_url = page.metafields.custom.guide_download.value.url | default: page.metafields.custom.guide_download.value
+%}
+
+<main class="gf-reference{% if is_restricted %} gf-reference--restricted{% endif %}"{% if is_restricted %} data-gf-age-gate{% endif %}>
+  {% if is_restricted %}
+    {% render 'glooscaps-age-gate', gate_id: 'gf-reference-agegate', exit_url: routes.root_url | append: 'pages/reference-guides', heading: section.settings.age_gate_heading, text: section.settings.age_gate_text, confirm_label: section.settings.age_gate_confirm, decline_label: section.settings.age_gate_decline %}
+  {% endif %}
+
+  <div class="{% if is_restricted %}gf-restricted-content{% endif %}">
+    <section class="gf-reference__hero">
+      <div class="gf-reference__colourbar" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+      <div class="gf-reference__hero-inner">
+        <div class="gf-reference__intro">
+          <a class="gf-reference__back" href="{{ routes.root_url }}pages/reference-guides">← {{ section.settings.library_label }}</a>
+          <p class="gf-reference__eyebrow">{{ eyebrow }}</p>
+          <h1>{{ page.title }}</h1>
+          <p class="gf-reference__subtitle">{{ subtitle }}</p>
+          <div class="gf-reference__actions">
+            {% if download_url != blank %}<a href="{{ download_url }}" target="_blank" rel="noopener">{{ section.settings.download_label }}</a>{% endif %}
+            <a href="{{ routes.root_url }}pages/contact">{{ section.settings.contact_label }}</a>
+          </div>
+        </div>
+        {% if guide_image != blank %}
+          <figure class="gf-reference__art">{{ guide_image | image_url: width: 1200 | image_tag: loading: 'eager', alt: page.title }}</figure>
+        {% else %}
+          <div class="gf-reference__monogram" aria-hidden="true">GF</div>
+        {% endif %}
+      </div>
+    </section>
+
+    <section class="gf-reference__body">
+      <article class="gf-reference__article" data-gf-accordion-source>{{ page.content }}</article>
+
+      <aside class="gf-reference__aside">
+        <div class="gf-reference__notice">
+          <p class="gf-reference__eyebrow">Reference Use Only</p>
+          <p>This guide provides general product information and does not replace personalized medical advice.</p>
+          {% if is_restricted %}<p><strong>NFS. For viewing purposes only.</strong></p>{% endif %}
+        </div>
+
+        <div class="gf-reference__related">
+          <h2>{{ section.settings.related_heading }}</h2>
+          <a href="{{ routes.root_url }}pages/hemp-oil"><span>Hemp Oil</span><small>Topical, hair, body, and nutritional uses</small></a>
+          <a href="{{ routes.root_url }}pages/bear-grease-guide"><span>Bear Grease</span><small>Traditional external-use skin care</small></a>
+          <a href="{{ routes.root_url }}pages/hemp-capsules-guide"><span>Hemp Capsules</span><small>Consistent daily supplement format</small></a>
+          <a href="{{ routes.root_url }}pages/cbd-dosage-guide"><span>CBD Dosage Guide</span><small>Drop-count reference for adults 19+</small></a>
+          <a href="{{ routes.root_url }}pages/colloidal-silver-guide"><span>Colloidal Silver</span><small>Topical use, safety, and storage</small></a>
+          <a href="{{ routes.root_url }}pages/pain-spray-guide"><span>Pain Spray</span><small>Targeted topical reference for adults 19+</small></a>
+        </div>
+      </aside>
+    </section>
+  </div>
+</main>
+
+<script>
+  (function () {
+    var article = document.querySelector('[data-gf-accordion-source]');
+    if (!article || article.dataset.enhanced === 'true') return;
+    article.dataset.enhanced = 'true';
+    var nodes = Array.prototype.slice.call(article.childNodes);
+    var fragment = document.createDocumentFragment();
+    var intro = document.createElement('div');
+    intro.className = 'gf-reference__lead';
+    var currentDetails = null;
+    var currentBody = null;
+
+    nodes.forEach(function (node) {
+      if (node.nodeType === 1 && node.tagName === 'H2') {
+        currentDetails = document.createElement('details');
+        currentDetails.className = 'gf-reference__accordion';
+        currentDetails.open = fragment.children.length === 0;
+        var summary = document.createElement('summary');
+        summary.innerHTML = '<span>' + node.innerHTML + '</span><span aria-hidden="true">+</span>';
+        currentBody = document.createElement('div');
+        currentBody.className = 'gf-reference__accordion-body';
+        currentDetails.appendChild(summary);
+        currentDetails.appendChild(currentBody);
+        fragment.appendChild(currentDetails);
+      } else if (currentBody) {
+        currentBody.appendChild(node);
+      } else {
+        intro.appendChild(node);
+      }
+    });
+
+    article.innerHTML = '';
+    if (intro.textContent.trim() || intro.children.length) article.appendChild(intro);
+    article.appendChild(fragment);
+  })();
+</script>
+
+{% stylesheet %}
+  .gf-reference { background:#f5efe5; color:#2d2924; }
+  .gf-reference__hero { position:relative; overflow:hidden; background:radial-gradient(circle at 80% 20%,rgba(156,47,38,.22),transparent 28%),#121412; color:#f5ead8; }
+  .gf-reference__colourbar { display:grid; grid-template-columns:repeat(4,1fr); height:8px; }
+  .gf-reference__colourbar span:nth-child(1){background:#c99939}.gf-reference__colourbar span:nth-child(2){background:#efe4ce}.gf-reference__colourbar span:nth-child(3){background:#8d2823}.gf-reference__colourbar span:nth-child(4){background:#101211}
+  .gf-reference__hero-inner { width:min(1180px,calc(100% - 32px)); margin:auto; min-height:560px; display:grid; grid-template-columns:minmax(0,1.25fr) minmax(260px,.75fr); gap:52px; align-items:center; padding:72px 0; }
+  .gf-reference__back { color:#c8b992; text-decoration:none; font-size:.9rem; }
+  .gf-reference__eyebrow { margin:28px 0 18px; color:#aeb279; text-transform:uppercase; letter-spacing:.17em; font-size:.76rem; font-weight:700; }
+  .gf-reference h1 { margin:0; max-width:850px; font-family:var(--font-heading--family); font-size:clamp(3.8rem,9vw,8.6rem); font-weight:400; line-height:.88; letter-spacing:-.03em; }
+  .gf-reference__subtitle { margin:26px 0 0; color:#bfae9c; font-family:var(--font-heading--family); font-size:clamp(1.35rem,3vw,2.3rem); font-style:italic; }
+  .gf-reference__actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:34px; }
+  .gf-reference__actions a { min-height:46px; display:inline-flex; align-items:center; padding:0 20px; border:1px solid #bd8c3c; border-radius:999px; color:#f5ead8; text-decoration:none; font-weight:700; }
+  .gf-reference__actions a:first-child { background:#7f2722; }
+  .gf-reference__art { margin:0; border:1px solid rgba(201,153,57,.38); box-shadow:0 30px 80px rgba(0,0,0,.38); transform:rotate(1.5deg); }
+  .gf-reference__art img { width:100%; display:block; }
+  .gf-reference__monogram { width:min(360px,70vw); aspect-ratio:1; display:grid; place-items:center; border:1px solid rgba(201,153,57,.35); border-radius:50%; color:rgba(245,234,216,.12); font-family:var(--font-heading--family); font-size:8rem; }
+  .gf-reference__body { width:min(1180px,calc(100% - 32px)); margin:auto; display:grid; grid-template-columns:minmax(0,1fr) 340px; gap:48px; padding:64px 0 90px; }
+  .gf-reference__lead { font-size:1.08rem; line-height:1.75; margin-bottom:28px; }
+  .gf-reference__accordion { border-top:1px solid rgba(45,41,36,.18); }
+  .gf-reference__accordion:last-child { border-bottom:1px solid rgba(45,41,36,.18); }
+  .gf-reference__accordion summary { list-style:none; cursor:pointer; display:flex; justify-content:space-between; gap:20px; padding:22px 0; color:#26382e; font-family:var(--font-heading--family); font-size:clamp(1.45rem,3vw,2rem); }
+  .gf-reference__accordion summary::-webkit-details-marker { display:none; }
+  .gf-reference__accordion[open] summary span:last-child { transform:rotate(45deg); }
+  .gf-reference__accordion-body { padding:0 0 28px; line-height:1.7; }
+  .gf-reference__accordion-body table { width:100%; border-collapse:collapse; background:#fffaf1; }
+  .gf-reference__accordion-body th,.gf-reference__accordion-body td { padding:13px; border:1px solid rgba(45,41,36,.13); text-align:left; vertical-align:top; }
+  .gf-reference__accordion-body th { background:#2e4437; color:#fffaf1; }
+  .gf-callout,.gf-reference__notice { border-left:4px solid #bd8c3c; background:#fffaf1; padding:18px 20px; }
+  .gf-reference__aside { display:grid; align-content:start; gap:24px; position:sticky; top:24px; }
+  .gf-reference__notice p:first-child { margin-top:0; }
+  .gf-reference__related { padding:24px; background:#18211b; color:#f5ead8; }
+  .gf-reference__related h2 { margin:0 0 18px; font-family:var(--font-heading--family); font-size:1.8rem; }
+  .gf-reference__related a { display:grid; gap:3px; padding:14px 0; border-top:1px solid rgba(245,234,216,.14); color:#f5ead8; text-decoration:none; }
+  .gf-reference__related small { color:#b9ad9c; }
+  @media(max-width:900px){.gf-reference__hero-inner,.gf-reference__body{grid-template-columns:1fr}.gf-reference__hero-inner{min-height:0}.gf-reference__art,.gf-reference__monogram{max-width:520px}.gf-reference__aside{position:static}.gf-reference h1{font-size:clamp(3.4rem,16vw,6rem)}}
+  @media(max-width:650px){.gf-reference__hero-inner{padding:48px 0}.gf-reference__body{padding:40px 0 64px}.gf-reference__accordion-body table,.gf-reference__accordion-body tbody,.gf-reference__accordion-body tr,.gf-reference__accordion-body td{display:block}.gf-reference__accordion-body thead{display:none}.gf-reference__accordion-body td{border-width:0 0 1px}.gf-reference__accordion-body td:before{content:attr(data-label);display:block;color:#2e4437;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;font-weight:700}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name":"Glooscaps reference guide",
+  "settings":[
+    {"type":"text","id":"library_label","label":"Library label","default":"Reference Library"},
+    {"type":"text","id":"download_label","label":"Download label","default":"Download guide"},
+    {"type":"text","id":"related_heading","label":"Related heading","default":"Continue exploring"},
+    {"type":"text","id":"contact_label","label":"Contact label","default":"Contact Glooscaps Finest"},
+    {"type":"text","id":"age_gate_heading","label":"Age gate heading","default":"Adults Only — 19+"},
+    {"type":"textarea","id":"age_gate_text","label":"Age gate text","default":"This section contains adult-use product information intended only for people 19 years of age or older in Nova Scotia. No adult-use products are sold through this Shopify checkout."},
+    {"type":"text","id":"age_gate_confirm","label":"Confirm label","default":"Yes, I am 19+"},
+    {"type":"text","id":"age_gate_decline","label":"Decline label","default":"No, take me back"}
+  ]
+}
+{% endschema %}
