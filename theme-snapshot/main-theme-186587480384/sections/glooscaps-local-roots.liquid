@@ -1,0 +1,151 @@
+<section class="gf-local-roots" aria-labelledby="gf-local-roots-title">
+  <div class="gf-local-roots__inner">
+    <div class="gf-local-roots__heading">
+      <p class="gf-local-roots__kicker">{{ section.settings.kicker }}</p>
+      <h2 id="gf-local-roots-title">{{ section.settings.heading }}</h2>
+      <p>{{ section.settings.text }}</p>
+    </div>
+    <div class="gf-local-roots__grid">
+      <article class="gf-local-roots__card">
+        <span>{{ section.settings.region_kicker }}</span>
+        <h3>{{ section.settings.region_heading }}</h3>
+        <p>{{ section.settings.region_text }}</p>
+        <a href="{{ section.settings.region_url | escape }}" target="_blank" rel="noopener">{{ section.settings.region_label }}</a>
+      </article>
+      <article class="gf-local-roots__card">
+        <span>{{ section.settings.shopping_kicker }}</span>
+        <h3>{{ section.settings.shopping_heading }}</h3>
+        <p>{{ section.settings.shopping_text }}</p>
+        <a href="{{ section.settings.shopping_url | escape }}" target="_blank" rel="noopener">{{ section.settings.shopping_label }}</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .gf-local-roots {
+    --gf-ink: #f4ead9;
+    --gf-muted: rgba(244, 234, 217, 0.72);
+    --gf-charcoal: #11100d;
+    --gf-panel: #1d1b16;
+    --gf-gold: #d7b24a;
+    --gf-red: #9d5849;
+    color: var(--gf-ink);
+    background: #15130f;
+    border-top: 1px solid rgba(215, 178, 74, 0.24);
+    padding: clamp(56px, 8vw, 96px) 0;
+  }
+
+  .gf-local-roots__inner {
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto;
+  }
+
+  .gf-local-roots__heading {
+    display: grid;
+    gap: 12px;
+    max-width: 880px;
+    margin-bottom: 30px;
+  }
+
+  .gf-local-roots__kicker {
+    margin: 0;
+    color: var(--gf-gold);
+    font-size: 0.82rem;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .gf-local-roots h2,
+  .gf-local-roots h3 {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    line-height: 1;
+    letter-spacing: 0;
+  }
+
+  .gf-local-roots h2 {
+    font-size: clamp(2.1rem, 5vw, 4.8rem);
+  }
+
+  .gf-local-roots h3 {
+    margin-top: 28px;
+    font-size: clamp(1.5rem, 2.2vw, 2rem);
+  }
+
+  .gf-local-roots__heading p:last-child,
+  .gf-local-roots__card p {
+    margin: 0;
+    color: var(--gf-muted);
+    font-size: 1.08rem;
+    line-height: 1.65;
+  }
+
+  .gf-local-roots__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .gf-local-roots__card {
+    min-height: 300px;
+    display: grid;
+    align-content: start;
+    border: 1px solid rgba(215, 178, 74, 0.2);
+    border-radius: 8px;
+    padding: 28px;
+    background: var(--gf-panel);
+  }
+
+  .gf-local-roots__card span {
+    color: var(--gf-red);
+    font-weight: 700;
+  }
+
+  .gf-local-roots__card a {
+    align-self: end;
+    display: inline-flex;
+    width: fit-content;
+    margin-top: 22px;
+    color: var(--gf-gold);
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+  }
+
+  .gf-local-roots__card a:hover {
+    color: var(--gf-ink);
+  }
+
+  @media (max-width: 860px) {
+    .gf-local-roots__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Glooscaps Mi'kma'ki roots",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Mi'kma'ki roots" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "A Mi'kmaw maker-led brand from Glooscap/Pesikitk." },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Glooscaps Finest should read as a sourced founder archive and botanical reference library. Clinton Ray Howard's maker profile, Glooscap/Pesikitk connection, and community work can anchor the brand without relying on generic tourism language." },
+    { "type": "text", "id": "region_kicker", "label": "Profile card kicker", "default": "Maker profile" },
+    { "type": "text", "id": "region_heading", "label": "Profile card heading", "default": "Clinton Ray Howard" },
+    { "type": "textarea", "id": "region_text", "label": "Profile card text", "default": "Mi'kmawitasik lists Clinton Ray Howard as a Mi'kmaw maker from Glooscap (Pesikitk), with horticulture and botanical expertise, creating herbal remedies and body care products using Mi'kmaw medicinal knowledge and sustainable practices." },
+    { "type": "text", "id": "region_label", "label": "Profile link label", "default": "Read Mi'kmawitasik profile" },
+    { "type": "text", "id": "region_url", "label": "Profile link URL", "default": "https://www.mikmawitasik.ca/member-profile/clinton-ray-howard-ch012167/" },
+    { "type": "text", "id": "shopping_kicker", "label": "Community card kicker", "default": "Rights & community" },
+    { "type": "text", "id": "shopping_heading", "label": "Community card heading", "default": "MRA involvement" },
+    { "type": "textarea", "id": "shopping_text", "label": "Community card text", "default": "The Micmac Rights Association reported in March 2024 that Clinton Ray Howard of Glooscap First Nation was added to its executive. MRA references should stay factual, attributed, and approved before becoming final brand copy." },
+    { "type": "text", "id": "shopping_label", "label": "Community link label", "default": "Read MRA update" },
+    { "type": "text", "id": "shopping_url", "label": "Community link URL", "default": "https://micmacrights.com/2024/03/12/micmac-rights-association-becomes-indigenous-governing-body-launches-eel-and-elver-fishing-plan-to-assert-micmac-rights/" }
+  ],
+  "presets": [
+    { "name": "Glooscaps Mi'kma'ki roots" }
+  ]
+}
+{% endschema %}
