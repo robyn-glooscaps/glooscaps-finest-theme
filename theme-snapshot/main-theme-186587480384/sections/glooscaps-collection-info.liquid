@@ -1,0 +1,233 @@
+{% liquid
+  assign collection_restricted = false
+  assign collection_blocked = false
+  assign collection_handle = collection.handle | downcase
+
+  if collection_handle == 'all' or collection_handle == 'catalog' or collection_handle == 'needs-pricing' or collection_handle == 'needs-photos' or collection_handle == 'frontpage'
+    assign collection_blocked = true
+  endif
+%}
+{% capture collection_restricted_output %}{% render 'glooscaps-product-restricted', gf_collection: collection %}{% endcapture %}
+{% liquid
+  assign collection_restricted_output = collection_restricted_output | strip
+  if collection_restricted_output == 'true'
+    assign collection_restricted = true
+  endif
+%}
+
+<main class="gf-collection{% if collection_restricted %} gf-collection--restricted{% endif %}"{% if collection_restricted %} data-gf-age-gate{% endif %}>
+  {% if collection_restricted %}
+    {% render 'glooscaps-age-gate', gate_id: 'gf-collection-agegate', exit_url: routes.root_url, heading: section.settings.age_gate_heading, text: section.settings.age_gate_text, confirm_label: section.settings.age_gate_confirm, decline_label: section.settings.age_gate_decline %}
+  {% endif %}
+
+  <div class="{% if collection_restricted %}gf-restricted-content{% endif %}">
+    <section class="gf-collection__hero">
+      <div class="gf-collection__inner">
+        {% if collection_restricted %}
+          <p class="gf-collection__kicker">{{ section.settings.restricted_kicker }}</p>
+        {% else %}
+          <p class="gf-collection__kicker">{{ section.settings.kicker }}</p>
+        {% endif %}
+        <h1>{{ collection.title }}</h1>
+        {% if collection_blocked %}
+          <p>{{ section.settings.blocked_text }}</p>
+        {% elsif collection.description != blank %}
+          <div class="gf-collection__description">{{ collection.description }}</div>
+        {% else %}
+          <p>{{ section.settings.fallback_text }}</p>
+        {% endif %}
+      </div>
+    </section>
+
+    <section class="gf-collection__grid-wrap">
+      <div class="gf-collection__inner">
+        <div class="gf-collection__notice">
+          {% if collection_restricted %}
+            <strong>{{ section.settings.restricted_notice_heading }}</strong>
+            <span>{{ section.settings.restricted_notice_text }}</span>
+          {% elsif collection_blocked %}
+            <strong>{{ section.settings.blocked_heading }}</strong>
+            <span>{{ section.settings.blocked_text }}</span>
+          {% else %}
+            <strong>{{ section.settings.notice_heading }}</strong>
+            <span>{{ section.settings.notice_text }}</span>
+          {% endif %}
+        </div>
+
+        {% unless collection_blocked %}
+          {% paginate collection.products by 24 %}
+            <div class="gf-collection__grid">
+              {% for product in collection.products %}
+                {% liquid
+                  assign product_hidden = false
+                %}
+                {% capture product_restricted_output %}{% render 'glooscaps-product-restricted', gf_product: product %}{% endcapture %}
+                {% liquid
+                  assign product_restricted_output = product_restricted_output | strip
+                  if product_restricted_output == 'true'
+                    assign product_hidden = true
+                  endif
+                  if collection_restricted
+                    assign product_hidden = false
+                  endif
+                %}
+
+                {% unless product_hidden %}
+                  <a class="gf-collection__card" href="{{ product.url }}">
+                    {% if product.featured_image != blank %}
+                      {{ product.featured_image | image_url: width: 700 | image_tag: class: 'gf-collection__image', alt: product.title }}
+                    {% endif %}
+                    <span>{{ product.title }}</span>
+                  </a>
+                {% endunless %}
+              {% endfor %}
+            </div>
+            {% if paginate.pages > 1 %}
+              <div class="gf-collection__pagination">{{ paginate | default_pagination }}</div>
+            {% endif %}
+          {% endpaginate %}
+        {% endunless %}
+      </div>
+    </section>
+  </div>
+</main>
+
+{% stylesheet %}
+  .gf-collection {
+    --gf-ink: #f4ead9;
+    --gf-muted: rgba(244, 234, 217, 0.72);
+    --gf-charcoal: #11100d;
+    --gf-panel: #1d1b16;
+    --gf-gold: #d7b24a;
+    --gf-red: #9d5849;
+    color: var(--gf-ink);
+    background: var(--gf-charcoal);
+  }
+
+  .gf-collection__hero {
+    color: var(--gf-ink);
+    background: #15130f;
+    border-bottom: 1px solid rgba(215, 178, 74, 0.24);
+    padding: clamp(58px, 9vw, 108px) 0;
+  }
+
+  .gf-collection__inner {
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto;
+  }
+
+  .gf-collection__kicker {
+    margin: 0 0 12px;
+    color: var(--gf-gold);
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .gf-collection h1 {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-size: clamp(2.4rem, 6vw, 5rem);
+    line-height: 1;
+    letter-spacing: 0;
+  }
+
+  .gf-collection__description,
+  .gf-collection__hero p:last-child {
+    max-width: 760px;
+    margin-top: 18px;
+    color: var(--gf-muted);
+    line-height: 1.65;
+  }
+
+  .gf-collection__grid-wrap {
+    padding: clamp(46px, 8vw, 80px) 0;
+  }
+
+  .gf-collection__notice {
+    display: grid;
+    gap: 4px;
+    border: 1px solid rgba(215, 178, 74, 0.2);
+    border-radius: 8px;
+    padding: 18px;
+    margin-bottom: 24px;
+    background: var(--gf-panel);
+  }
+
+  .gf-collection--restricted .gf-collection__notice {
+    border-color: rgba(157, 88, 73, 0.56);
+    background: rgba(157, 88, 73, 0.14);
+  }
+
+  .gf-collection__notice span {
+    color: var(--gf-muted);
+  }
+
+  .gf-collection__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .gf-collection__card {
+    display: grid;
+    gap: 12px;
+    color: var(--gf-ink);
+    text-decoration: none;
+  }
+
+  .gf-collection__image {
+    aspect-ratio: 1;
+    width: 100%;
+    object-fit: cover;
+    border: 1px solid rgba(215, 178, 74, 0.2);
+    border-radius: 8px;
+    background: var(--gf-panel);
+  }
+
+  .gf-collection__card span {
+    font-weight: 700;
+  }
+
+  .gf-collection__card:hover span {
+    color: var(--gf-gold);
+  }
+
+  .gf-collection__pagination {
+    margin-top: 32px;
+  }
+
+  @media (max-width: 900px) {
+    .gf-collection__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 520px) {
+    .gf-collection__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Glooscaps collection info",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Reference collection" },
+    { "type": "text", "id": "restricted_kicker", "label": "19+ kicker", "default": "Product viewing - 19+" },
+    { "type": "textarea", "id": "fallback_text", "label": "Fallback text", "default": "Browse available public product information. Restricted product viewing remains separated by the selective 19+ gate." },
+    { "type": "text", "id": "notice_heading", "label": "Notice heading", "default": "Filtered information view" },
+    { "type": "textarea", "id": "notice_text", "label": "Notice text", "default": "Public collections hide restricted product cards. Direct adult-use product pages use the selective gate and remain informational only." },
+    { "type": "text", "id": "restricted_notice_heading", "label": "19+ notice heading", "default": "NFS - for viewing purposes only" },
+    { "type": "textarea", "id": "restricted_notice_text", "label": "19+ notice text", "default": "This adult-use product collection is for adults 19+ only. No adult-use products are sold through this Shopify checkout. NFS. For viewing purposes only." },
+    { "type": "text", "id": "blocked_heading", "label": "Blocked collection heading", "default": "Catalogue view is closed" },
+    { "type": "textarea", "id": "blocked_text", "label": "Blocked collection text", "default": "Broad catalogue pages are hidden in this information-first build so unfinished or restricted product records are not exposed publicly. Use the reference library, artist pages, or contact page instead." },
+    { "type": "text", "id": "age_gate_heading", "label": "Age gate heading", "default": "Adults Only - 19+" },
+    { "type": "textarea", "id": "age_gate_text", "label": "Age gate text", "default": "This section contains adult-use product information intended only for people 19 years of age or older in Nova Scotia. No adult-use products are sold through this Shopify checkout." },
+    { "type": "text", "id": "age_gate_confirm", "label": "Confirm label", "default": "Yes, I am 19+" },
+    { "type": "text", "id": "age_gate_decline", "label": "Decline label", "default": "No, take me back" }
+  ]
+}
+{% endschema %}
