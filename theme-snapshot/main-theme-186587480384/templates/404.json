@@ -1,0 +1,24 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "glooscaps-message",
+      "settings": {
+        "kicker": "Record not found",
+        "heading": "This page is not available.",
+        "text": "The link may be old, private, unfinished, or outside the public Glooscaps Finest information library. Return home or use the contact page instead.",
+        "home_label": "Return home",
+        "contact_label": "Contact"
+      }
+    }
+  },
+  "order": ["main"]
+}
