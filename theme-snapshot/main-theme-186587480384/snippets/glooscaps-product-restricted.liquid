@@ -1,0 +1,89 @@
+{% doc %}
+  Returns true when a product or collection should be treated as restricted product-viewing content.
+
+  @param {object} [gf_product] - Product to classify.
+  @param {object} [gf_collection] - Collection to classify.
+
+  @example
+  {% render 'glooscaps-product-restricted', gf_product: product %}
+{% enddoc %}
+
+{% liquid
+  assign gf_is_restricted = false
+  assign gf_restricted_collection_handles = '|cbd-products|1-1-thc-cbd|cbd-wellness|edibles|topicals|topicals-body|pain-relief|internal-wellness|liquid-oils|oils-tinctures|extracts-concentrates|concentrates|flower|vape-carts|pre-rolls|prerolls|'
+
+  if gf_product != blank
+    assign gf_product_explicit_public = false
+    assign gf_product_classification = ''
+    if gf_product.metafields.custom.restriction_classification != blank
+      assign gf_product_classification = gf_product.metafields.custom.restriction_classification.value | default: gf_product.metafields.custom.restriction_classification | downcase
+    endif
+
+    if gf_product_classification == 'public' or gf_product_classification == 'unrestricted' or gf_product_classification == 'general'
+      assign gf_product_explicit_public = true
+    elsif gf_product_classification == '19_plus' or gf_product_classification == '19+' or gf_product_classification == 'restricted' or gf_product_classification == 'adult' or gf_product_classification == 'adult_use' or gf_product_classification contains '19'
+      assign gf_is_restricted = true
+    endif
+
+    unless gf_product_explicit_public
+      assign gf_title = gf_product.title | downcase
+      assign gf_type = gf_product.type | downcase
+
+      if gf_title contains 'thc' or gf_title contains 'cbd' or gf_title contains '1:1' or gf_title contains 'rso' or gf_title contains 'distillate' or gf_title contains 'vape' or gf_title contains 'hash' or gf_title contains 'flower' or gf_title contains 'edible' or gf_title contains 'gumm' or gf_title contains 'honey oil' or gf_title contains 'pre-roll' or gf_title contains 'pre roll' or gf_title contains 'preroll' or gf_title contains 'concentrate' or gf_title contains 'capsule' or gf_title contains 'tincture' or gf_title contains 'topical'
+        assign gf_is_restricted = true
+      endif
+
+      if gf_type contains 'edible' or gf_type contains 'extract' or gf_type contains 'vape' or gf_type contains 'flower' or gf_type contains 'concentrate' or gf_type contains 'capsule' or gf_type contains 'tincture' or gf_type contains 'pain' or gf_type contains 'topical' or gf_type contains 'pre-roll' or gf_type contains 'pre roll' or gf_type contains 'preroll'
+        assign gf_is_restricted = true
+      endif
+
+      for gf_tag in gf_product.tags
+        assign gf_tag_down = gf_tag | downcase
+        if gf_tag_down contains '19-plus' or gf_tag_down contains '19+' or gf_tag_down contains 'adult' or gf_tag_down contains 'adult-use' or gf_tag_down contains 'restricted' or gf_tag_down contains 'nfs' or gf_tag_down contains 'thc' or gf_tag_down contains 'cbd' or gf_tag_down contains '1:1' or gf_tag_down contains 'edible' or gf_tag_down contains 'extract' or gf_tag_down contains 'vape' or gf_tag_down contains 'flower' or gf_tag_down contains 'concentrate' or gf_tag_down contains 'gummies' or gf_tag_down contains 'tincture' or gf_tag_down contains 'capsule' or gf_tag_down contains 'topical' or gf_tag_down contains 'pre-roll' or gf_tag_down contains 'pre roll' or gf_tag_down contains 'preroll'
+          assign gf_is_restricted = true
+        endif
+      endfor
+
+      for gf_product_collection in gf_product.collections
+        assign gf_product_collection_key = gf_product_collection.handle | downcase | prepend: '|' | append: '|'
+        if gf_restricted_collection_handles contains gf_product_collection_key
+          assign gf_is_restricted = true
+        endif
+      endfor
+    endunless
+  endif
+
+  if gf_collection != blank
+    assign gf_collection_explicit_public = false
+    assign gf_collection_classification = ''
+    if gf_collection.metafields.custom.restriction_classification != blank
+      assign gf_collection_classification = gf_collection.metafields.custom.restriction_classification.value | default: gf_collection.metafields.custom.restriction_classification | downcase
+    endif
+
+    if gf_collection_classification == 'public' or gf_collection_classification == 'unrestricted' or gf_collection_classification == 'general'
+      assign gf_collection_explicit_public = true
+    elsif gf_collection_classification == '19_plus' or gf_collection_classification == '19+' or gf_collection_classification == 'restricted' or gf_collection_classification == 'adult' or gf_collection_classification == 'adult_use' or gf_collection_classification contains '19'
+      assign gf_is_restricted = true
+    endif
+
+    unless gf_collection_explicit_public
+      assign gf_collection_handle = gf_collection.handle | downcase
+      assign gf_collection_title = gf_collection.title | downcase
+      assign gf_collection_key = gf_collection_handle | prepend: '|' | append: '|'
+
+      if gf_restricted_collection_handles contains gf_collection_key
+        assign gf_is_restricted = true
+      endif
+
+      if gf_collection_title contains 'thc' or gf_collection_title contains 'cbd' or gf_collection_title contains '1:1' or gf_collection_title contains 'edible' or gf_collection_title contains 'extract' or gf_collection_title contains 'concentrate' or gf_collection_title contains 'flower' or gf_collection_title contains 'vape' or gf_collection_title contains 'topical' or gf_collection_title contains 'tincture' or gf_collection_title contains 'capsule' or gf_collection_title contains 'distillate' or gf_collection_title contains 'rso' or gf_collection_title contains 'gumm' or gf_collection_title contains 'pre-roll' or gf_collection_title contains 'pre roll' or gf_collection_title contains 'preroll' or gf_collection_title contains 'honey oil'
+        assign gf_is_restricted = true
+      endif
+    endunless
+  endif
+
+  if gf_is_restricted
+    echo 'true'
+  else
+    echo 'false'
+  endif
+%}
