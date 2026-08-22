@@ -1,0 +1,282 @@
+{% doc %}
+  Renders the selective Glooscaps Finest 19+ gate for restricted product-viewing surfaces.
+
+  @param {string} [gate_id] - Unique ID prefix for ARIA relationships.
+  @param {string} [exit_url] - Public URL used by the decline action.
+  @param {string} [heading] - Dialog heading text.
+  @param {string} [text] - Dialog description text.
+  @param {string} [confirm_label] - Confirmation button label.
+  @param {string} [decline_label] - Decline link label.
+
+  @example
+  {% render 'glooscaps-age-gate', gate_id: 'gf-product-agegate' %}
+{% enddoc %}
+
+{% liquid
+  assign gf_gate_id = gate_id | default: 'gf-agegate'
+  assign gf_exit_url = exit_url | default: routes.root_url
+  assign gf_heading = heading | default: 'Adults Only — 19+'
+  assign gf_text = text | default: 'This section contains adult-use product information intended only for people 19 years of age or older in Nova Scotia. No adult-use products are sold through this Shopify checkout.'
+  assign gf_confirm = confirm_label | default: 'Yes, I am 19+'
+  assign gf_decline = decline_label | default: 'No, take me back'
+%}
+
+<div class="gf-agegate" data-gf-age-modal role="dialog" aria-modal="true" aria-labelledby="{{ gf_gate_id }}-title" aria-describedby="{{ gf_gate_id }}-description" tabindex="-1">
+  <div class="gf-agegate__box">
+    <p class="gf-agegate__kicker">Adults 19+</p>
+    <h2 id="{{ gf_gate_id }}-title">{{ gf_heading }}</h2>
+    <p id="{{ gf_gate_id }}-description">{{ gf_text }}</p>
+    <div class="gf-agegate__actions">
+      <button type="button" data-gf-age-confirm>{{ gf_confirm }}</button>
+      <a href="{{ gf_exit_url }}" data-gf-age-decline>{{ gf_decline }}</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  html.gf-agegate-lock,
+  body.gf-agegate-lock {
+    overflow: hidden;
+  }
+
+  [data-gf-age-gate]:not([data-gf-age-confirmed='true']) .gf-restricted-content {
+    visibility: hidden;
+  }
+
+  .gf-agegate {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    color: #2e2a24;
+    background: rgba(18, 26, 21, 0.9);
+  }
+
+  .gf-agegate[data-gf-age-hidden='true'] {
+    display: none;
+  }
+
+  .gf-agegate__box {
+    width: min(540px, 100%);
+    border: 1px solid rgba(215, 178, 74, 0.32);
+    border-radius: 8px;
+    padding: clamp(28px, 6vw, 46px);
+    background: #faf7f1;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.38);
+  }
+
+  .gf-agegate__kicker {
+    margin: 0 0 12px;
+    color: #9f4d43;
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .gf-agegate h2 {
+    margin: 0 0 14px;
+    color: #24382d;
+    font-family: var(--font-heading--family);
+    font-size: clamp(2.1rem, 5vw, 3.4rem);
+    line-height: 1;
+    letter-spacing: 0;
+  }
+
+  .gf-agegate p {
+    margin: 0;
+    color: #5a5147;
+    line-height: 1.6;
+  }
+
+  .gf-agegate__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 26px;
+  }
+
+  .gf-agegate__actions button,
+  .gf-agegate__actions a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    border-radius: 999px;
+    padding: 0 18px;
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .gf-agegate__actions button {
+    border: 0;
+    color: #faf7f1;
+    background: #2f4638;
+    cursor: pointer;
+  }
+
+  .gf-agegate__actions a {
+    color: #2f4638;
+    border: 1px solid currentColor;
+  }
+
+  .gf-agegate__actions button:focus-visible,
+  .gf-agegate__actions a:focus-visible {
+    outline: 3px solid #d7b24a;
+    outline-offset: 3px;
+  }
+
+  @media (max-width: 520px) {
+    .gf-agegate {
+      align-items: end;
+      padding: 16px;
+    }
+
+    .gf-agegate__box {
+      padding: 26px 20px;
+    }
+
+    .gf-agegate__actions button,
+    .gf-agegate__actions a {
+      width: 100%;
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    var script = document.currentScript;
+    var root = script ? script.closest('[data-gf-age-gate]') : null;
+    if (!root) return;
+
+    var modal = root.querySelector('[data-gf-age-modal]');
+    var confirmButton = root.querySelector('[data-gf-age-confirm]');
+    var restrictedContent = root.querySelectorAll('.gf-restricted-content');
+    var storageKey = 'glooscaps_age_confirmed_19';
+    var previousFocus = document.activeElement;
+    var inertSiblings = [];
+
+    function setRestrictedContentInert(value) {
+      restrictedContent.forEach(function (element) {
+        if (value) {
+          element.setAttribute('inert', '');
+          element.setAttribute('aria-hidden', 'true');
+        } else {
+          element.removeAttribute('inert');
+          element.removeAttribute('aria-hidden');
+        }
+      });
+    }
+
+    function setPageSiblingsInert(value) {
+      if (!document.body) return;
+
+      if (value) {
+        inertSiblings = [];
+        Array.prototype.slice.call(document.body.children).forEach(function (child) {
+          if (child === root || child.contains(root)) return;
+          inertSiblings.push({
+            node: child,
+            inert: child.hasAttribute('inert'),
+            ariaHidden: child.getAttribute('aria-hidden')
+          });
+          child.setAttribute('inert', '');
+          child.setAttribute('aria-hidden', 'true');
+        });
+        return;
+      }
+
+      inertSiblings.forEach(function (entry) {
+        if (!entry.inert) entry.node.removeAttribute('inert');
+        if (entry.ariaHidden === null) {
+          entry.node.removeAttribute('aria-hidden');
+        } else {
+          entry.node.setAttribute('aria-hidden', entry.ariaHidden);
+        }
+      });
+      inertSiblings = [];
+    }
+
+    function getFocusableElements() {
+      if (!modal) return [];
+      return Array.prototype.slice.call(modal.querySelectorAll('a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])')).filter(function (element) {
+        return !!(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
+      });
+    }
+
+    function handleKeydown(event) {
+      if (!modal || modal.getAttribute('data-gf-age-hidden') === 'true') return;
+
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        if (confirmButton) confirmButton.focus();
+        return;
+      }
+
+      if (event.key !== 'Tab') return;
+
+      var focusable = getFocusableElements();
+      if (focusable.length === 0) {
+        event.preventDefault();
+        modal.focus();
+        return;
+      }
+
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    function unlock() {
+      root.setAttribute('data-gf-age-confirmed', 'true');
+      if (modal) modal.setAttribute('data-gf-age-hidden', 'true');
+      document.documentElement.classList.remove('gf-agegate-lock');
+      document.body.classList.remove('gf-agegate-lock');
+      setRestrictedContentInert(false);
+      setPageSiblingsInert(false);
+      document.removeEventListener('keydown', handleKeydown, true);
+    }
+
+    try {
+      if (window.localStorage.getItem(storageKey) === 'true') {
+        unlock();
+        return;
+      }
+    } catch (error) {}
+
+    document.documentElement.classList.add('gf-agegate-lock');
+    document.body.classList.add('gf-agegate-lock');
+    setRestrictedContentInert(true);
+    setPageSiblingsInert(true);
+    document.addEventListener('keydown', handleKeydown, true);
+
+    window.setTimeout(function () {
+      if (confirmButton) {
+        confirmButton.focus();
+      } else if (modal) {
+        modal.focus();
+      }
+    }, 80);
+
+    if (confirmButton) {
+      confirmButton.addEventListener('click', function () {
+        try {
+          window.localStorage.setItem(storageKey, 'true');
+        } catch (error) {}
+        unlock();
+        if (previousFocus && typeof previousFocus.focus === 'function') {
+          previousFocus.focus({ preventScroll: true });
+        }
+      });
+    }
+  })();
+</script>
