@@ -1,0 +1,202 @@
+<footer class="gf-footer">
+  <div class="gf-footer__inner">
+    <div class="gf-footer__brand">
+      {% if settings.logo != blank %}
+        {{ settings.logo | image_url: width: 180 | image_tag: class: 'gf-footer__logo', alt: section.settings.brand_name }}
+      {% endif %}
+      <p>{{ section.settings.footer_statement }}</p>
+    </div>
+
+    <nav class="gf-footer__nav" aria-label="Footer">
+      <a href="{{ routes.root_url }}#arts-crafts">{{ section.settings.nav_arts }}</a>
+      <a href="{{ routes.root_url }}#community">{{ section.settings.nav_community }}</a>
+      <a href="{{ routes.root_url }}#bath-body">{{ section.settings.nav_topicals }}</a>
+      <a href="{{ routes.root_url }}#adult-products">{{ section.settings.nav_adult }}</a>
+      <a href="{{ routes.root_url }}pages/about-us">{{ section.settings.nav_about }}</a>
+      <a href="{{ routes.root_url }}pages/contact">{{ section.settings.nav_contact }}</a>
+    </nav>
+
+    <div class="gf-footer__social">
+      <p>{{ section.settings.social_heading }}</p>
+      <a href="{{ section.settings.linktree_url | escape }}" target="_blank" rel="noopener">Linktree</a>
+      <a href="{{ section.settings.facebook_url | escape }}" target="_blank" rel="noopener">Facebook</a>
+      <a href="{{ section.settings.instagram_url | escape }}" target="_blank" rel="noopener">Instagram</a>
+      <a href="{{ section.settings.tiktok_url | escape }}" target="_blank" rel="noopener">TikTok</a>
+      <a href="{{ section.settings.smoke_harbour_url | escape }}" target="_blank" rel="noopener">Smoke Harbour</a>
+    </div>
+  </div>
+  <div class="gf-footer__legal">
+    <p>{{ section.settings.legal_note }}</p>
+  </div>
+</footer>
+
+{% stylesheet %}
+  .gf-footer {
+    color: #faf7f1;
+    background: #24382d;
+  }
+
+  .gf-footer__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(160px, 0.8fr) minmax(180px, 0.8fr);
+    gap: 32px;
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 54px 0 36px;
+  }
+
+  .gf-footer__brand p,
+  .gf-footer__social p,
+  .gf-footer__legal p {
+    margin: 0;
+  }
+
+  .gf-footer__brand p {
+    max-width: 560px;
+    color: rgba(250, 247, 241, 0.78);
+    line-height: 1.6;
+  }
+
+  .gf-footer__logo {
+    display: block;
+    width: min(170px, 58vw);
+    height: auto;
+    margin-bottom: 18px;
+    filter: brightness(1.08);
+  }
+
+  .gf-footer__nav,
+  .gf-footer__social {
+    display: grid;
+    align-content: start;
+    gap: 10px;
+  }
+
+  .gf-footer__social p {
+    color: #d7b24a;
+    font-family: var(--font-heading--family);
+    font-size: 1.05rem;
+  }
+
+  .gf-footer a {
+    color: #faf7f1;
+    text-decoration: none;
+  }
+
+  .gf-footer a:hover {
+    color: #d7b24a;
+  }
+
+  .gf-footer__legal {
+    border-top: 1px solid rgba(250, 247, 241, 0.16);
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 18px 0 28px;
+    color: rgba(250, 247, 241, 0.7);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 780px) {
+    .gf-footer__inner {
+      grid-template-columns: 1fr;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Glooscaps footer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "brand_name",
+      "label": "Brand name",
+      "default": "Glooscap's Finest"
+    },
+    {
+      "type": "text",
+      "id": "footer_statement",
+      "label": "Footer statement",
+      "default": "A grounded, community-rooted destination for hemp bath and body products, handmade goods, wellness education, and local connection."
+    },
+    {
+      "type": "text",
+      "id": "nav_arts",
+      "label": "Arts label",
+      "default": "Arts & crafts"
+    },
+    {
+      "type": "text",
+      "id": "nav_community",
+      "label": "Community label",
+      "default": "Community"
+    },
+    {
+      "type": "text",
+      "id": "nav_topicals",
+      "label": "Topicals label",
+      "default": "Hemp products"
+    },
+    {
+      "type": "text",
+      "id": "nav_adult",
+      "label": "19+ label",
+      "default": "19+ info"
+    },
+    {
+      "type": "text",
+      "id": "nav_about",
+      "label": "About label",
+      "default": "About"
+    },
+    {
+      "type": "text",
+      "id": "nav_contact",
+      "label": "Contact label",
+      "default": "Contact"
+    },
+    {
+      "type": "text",
+      "id": "social_heading",
+      "label": "Social heading",
+      "default": "Connect"
+    },
+    {
+      "type": "text",
+      "id": "linktree_url",
+      "label": "Linktree URL",
+      "default": "https://linktr.ee/glooscapsfinest"
+    },
+    {
+      "type": "text",
+      "id": "facebook_url",
+      "label": "Facebook URL",
+      "default": "https://www.facebook.com/Glooscaps-Finest-106209585298368"
+    },
+    {
+      "type": "text",
+      "id": "instagram_url",
+      "label": "Instagram URL",
+      "default": "https://www.instagram.com/glooscaps__finest/"
+    },
+    {
+      "type": "text",
+      "id": "tiktok_url",
+      "label": "TikTok URL",
+      "default": "https://www.tiktok.com/@glooscapsfinest"
+    },
+    {
+      "type": "text",
+      "id": "smoke_harbour_url",
+      "label": "Smoke Harbour URL",
+      "default": "https://smokeharbour.com/"
+    },
+    {
+      "type": "text",
+      "id": "legal_note",
+      "label": "Legal note",
+      "default": "The main site is informational for hemp products and community content. Adult-use product information is kept separate, age-gated where applicable, and is not sold through this Shopify checkout."
+    }
+  ]
+}
+{% endschema %}
