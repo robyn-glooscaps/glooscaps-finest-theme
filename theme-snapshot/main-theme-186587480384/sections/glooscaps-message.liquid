@@ -1,0 +1,95 @@
+<main class="gf-message">
+  <section class="gf-message__inner">
+    <p class="gf-message__kicker">{{ section.settings.kicker }}</p>
+    <h1>{{ section.settings.heading }}</h1>
+    <p>{{ section.settings.text }}</p>
+    <div class="gf-message__actions">
+      <a href="{{ routes.root_url }}">{{ section.settings.home_label }}</a>
+      <a href="{{ routes.root_url }}pages/contact">{{ section.settings.contact_label }}</a>
+    </div>
+  </section>
+</main>
+
+{% stylesheet %}
+  .gf-message {
+    --gf-ink: #f4ead9;
+    --gf-muted: rgba(244, 234, 217, 0.72);
+    --gf-charcoal: #11100d;
+    --gf-panel: #1d1b16;
+    --gf-gold: #d7b24a;
+    min-height: 60svh;
+    display: grid;
+    align-items: center;
+    color: var(--gf-ink);
+    background: var(--gf-charcoal);
+  }
+
+  .gf-message__inner {
+    width: min(820px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: clamp(56px, 10vw, 110px) 0;
+  }
+
+  .gf-message__kicker {
+    margin: 0 0 12px;
+    color: var(--gf-gold);
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .gf-message h1 {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-size: clamp(2.4rem, 6vw, 5rem);
+    line-height: 1;
+    letter-spacing: 0;
+  }
+
+  .gf-message p {
+    max-width: 620px;
+    margin: 20px 0 0;
+    color: var(--gf-muted);
+    line-height: 1.65;
+  }
+
+  .gf-message__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  .gf-message__actions a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    border-radius: 999px;
+    padding: 0 18px;
+    text-decoration: none;
+    color: #15130f;
+    background: var(--gf-gold);
+    font-weight: 700;
+  }
+
+  .gf-message__actions a:last-child {
+    color: var(--gf-ink);
+    background: transparent;
+    border: 1px solid currentColor;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Glooscaps message",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Information" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "This page is not part of the public library." },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Glooscaps Finest is organized as an information-first site for public reference guides, founder context, artist profiles, and carefully separated product viewing." },
+    { "type": "text", "id": "home_label", "label": "Home label", "default": "Return home" },
+    { "type": "text", "id": "contact_label", "label": "Contact label", "default": "Contact" }
+  ]
+}
+{% endschema %}
