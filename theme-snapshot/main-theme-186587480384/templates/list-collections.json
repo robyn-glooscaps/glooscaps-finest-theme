@@ -1,0 +1,24 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "glooscaps-message",
+      "settings": {
+        "kicker": "Collections",
+        "heading": "Catalogue browsing is intentionally limited.",
+        "text": "This build does not expose the broad product catalogue. Public visitors should use the reference library, artist pages, public arts and crafts areas, About, Contact, or direct approved product links.",
+        "home_label": "Return home",
+        "contact_label": "Contact"
+      }
+    }
+  },
+  "order": ["main"]
+}
