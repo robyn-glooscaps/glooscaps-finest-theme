@@ -1,0 +1,209 @@
+<header class="gf-header">
+  <div class="gf-header__inner">
+    <a class="gf-brand" href="{{ routes.root_url }}" aria-label="{{ section.settings.brand_name | escape }}">
+      {% if settings.logo != blank %}
+        {{ settings.logo | image_url: width: 220 | image_tag: class: 'gf-brand__logo', alt: section.settings.brand_name, loading: 'eager' }}
+      {% else %}
+        <span class="gf-brand__wordmark">{{ section.settings.brand_name }}</span>
+      {% endif %}
+    </a>
+
+    <nav class="gf-nav" aria-label="Primary">
+      <a href="{{ routes.root_url }}">{{ section.settings.nav_home }}</a>
+      <a href="{{ routes.root_url }}#arts-crafts">{{ section.settings.nav_arts }}</a>
+      <a href="{{ routes.root_url }}#community">{{ section.settings.nav_community }}</a>
+      <a href="{{ routes.root_url }}#bath-body">{{ section.settings.nav_topicals }}</a>
+      <a href="{{ routes.root_url }}#adult-products">{{ section.settings.nav_adult }}</a>
+      <a href="{{ routes.root_url }}pages/about-us">{{ section.settings.nav_about }}</a>
+      <a href="{{ routes.root_url }}pages/contact">{{ section.settings.nav_contact }}</a>
+    </nav>
+
+    <div class="gf-header__actions" aria-label="External links">
+      <a href="{{ section.settings.linktree_url | escape }}" target="_blank" rel="noopener">{{ section.settings.linktree_label }}</a>
+      <a class="gf-header__feature" href="{{ section.settings.feature_url | escape }}" target="_blank" rel="noopener">{{ section.settings.feature_label }}</a>
+    </div>
+  </div>
+</header>
+
+{% stylesheet %}
+  .gf-header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: rgba(250, 247, 241, 0.96);
+    border-bottom: 1px solid rgba(47, 70, 56, 0.16);
+    backdrop-filter: blur(16px);
+  }
+
+  .gf-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto;
+    min-height: 78px;
+  }
+
+  .gf-brand {
+    display: inline-flex;
+    align-items: center;
+    min-width: max-content;
+    color: #24382d;
+    text-decoration: none;
+  }
+
+  .gf-brand__logo {
+    width: clamp(120px, 14vw, 190px);
+    height: auto;
+    display: block;
+  }
+
+  .gf-brand__wordmark {
+    font-family: var(--font-heading--family);
+    font-size: 1.25rem;
+    color: #24382d;
+  }
+
+  .gf-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+  }
+
+  .gf-nav a,
+  .gf-header__actions a {
+    color: #24382d;
+    text-decoration: none;
+    font-size: 0.95rem;
+    line-height: 1.2;
+  }
+
+  .gf-nav a:hover,
+  .gf-header__actions a:hover {
+    color: #9d5849;
+  }
+
+  .gf-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: max-content;
+  }
+
+  .gf-header__feature {
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
+    padding: 0 14px;
+    border-radius: 999px;
+    color: #faf7f1 !important;
+    background: #2f4638;
+  }
+
+  .gf-header__feature:hover {
+    background: #9d5849;
+  }
+
+  @media (max-width: 860px) {
+    .gf-header__inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      justify-items: center;
+      gap: 12px;
+      padding: 12px 0 14px;
+    }
+
+    .gf-nav {
+      gap: 12px 16px;
+    }
+
+    .gf-header__actions {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Glooscaps header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "brand_name",
+      "label": "Brand name",
+      "default": "Glooscap's Finest"
+    },
+    {
+      "type": "text",
+      "id": "nav_home",
+      "label": "Home label",
+      "default": "Home"
+    },
+    {
+      "type": "text",
+      "id": "nav_arts",
+      "label": "Arts label",
+      "default": "Arts & crafts"
+    },
+    {
+      "type": "text",
+      "id": "nav_community",
+      "label": "Community label",
+      "default": "Community"
+    },
+    {
+      "type": "text",
+      "id": "nav_topicals",
+      "label": "Topicals label",
+      "default": "Hemp products"
+    },
+    {
+      "type": "text",
+      "id": "nav_adult",
+      "label": "19+ label",
+      "default": "19+ info"
+    },
+    {
+      "type": "text",
+      "id": "nav_about",
+      "label": "About label",
+      "default": "About"
+    },
+    {
+      "type": "text",
+      "id": "nav_contact",
+      "label": "Contact label",
+      "default": "Contact"
+    },
+    {
+      "type": "text",
+      "id": "linktree_label",
+      "label": "Linktree label",
+      "default": "Linktree"
+    },
+    {
+      "type": "text",
+      "id": "linktree_url",
+      "label": "Linktree URL",
+      "default": "https://linktr.ee/glooscapsfinest"
+    },
+    {
+      "type": "text",
+      "id": "feature_label",
+      "label": "Feature link label",
+      "default": "Instagram"
+    },
+    {
+      "type": "text",
+      "id": "feature_url",
+      "label": "Feature link URL",
+      "default": "https://www.instagram.com/glooscaps__finest/"
+    }
+  ]
+}
+{% endschema %}
